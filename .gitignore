@@ -41,3 +41,5 @@ build/
 # Environment configuration
 .env*
 !.env.example
+
+logs/
