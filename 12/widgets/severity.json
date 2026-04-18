@@ -1,1 +1,0 @@
-[{"uid":"5a493445fb904fae","name":"Successful login with valid credentials","time":{"start":1776553013443,"stop":1776553025758,"duration":12315},"status":"passed","severity":"normal"},{"uid":"73901ba4f659d319","name":"Verify Login page title","time":{"start":1776553013446,"stop":1776553024904,"duration":11458},"status":"passed","severity":"normal"}]
