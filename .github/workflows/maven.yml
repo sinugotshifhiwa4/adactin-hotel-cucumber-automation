@@ -81,6 +81,13 @@ jobs:
         if: always()
         with:
           allure_results: target/allure-results
+          allure_report: allure-report
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Add .nojekyll
+        if: always()
+        run: touch allure-history/.nojekyll
 
       - name: Publish Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4.0.0
@@ -89,6 +96,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
+          enable_jekyll: false
 
       - name: Update dependency graph
         uses: advanced-security/maven-dependency-submission-action@v4.1.2
