@@ -35,6 +35,16 @@ on:
         options:
           - '@regression'
           - '@sanity'
+      forkCount:
+        description: 'Parallel fork count'
+        required: true
+        default: '2'
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - '4'
+          - '8'
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -75,6 +85,7 @@ jobs:
           -DENV=${{ github.event.inputs.env || 'dev' }}
           -Dtags="${{ github.event.inputs.tags || '@regression' }}"
           -Dbrowser=${{ github.event.inputs.browser || 'chrome' }}
+          -DforkCount=${{ github.event.inputs.forkCount || '2' }}
 
       - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
