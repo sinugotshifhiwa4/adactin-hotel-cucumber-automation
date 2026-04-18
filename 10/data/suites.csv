@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"  As a registered user
+  I want to log in to the Adactin Hotel Reservation System
+  So that I can access the hotel booking dashboard","12132","Verify Login page title","","Sat Apr 18 22:47:49 UTC 2026","passed","Sat Apr 18 22:48:01 UTC 2026","","User Authentication - Hotel Reservation System","Verify Login page title",""
+"  As a registered user
+  I want to log in to the Adactin Hotel Reservation System
+  So that I can access the hotel booking dashboard","13031","Successful login with valid credentials","","Sat Apr 18 22:47:49 UTC 2026","passed","Sat Apr 18 22:48:02 UTC 2026","","User Authentication - Hotel Reservation System","Successful login with valid credentials",""
