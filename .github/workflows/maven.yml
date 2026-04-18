@@ -47,6 +47,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: DEV  # links to your GitHub DEV environment
 
     steps:
       - uses: actions/checkout@v4
@@ -59,6 +60,10 @@ jobs:
           cache: maven
 
       - name: Run Tests
+        env:
+          CI_PORTAL_BASE_URL: ${{ vars.CI_PORTAL_BASE_URL }}
+          CI_PORTAL_USERNAME: ${{ vars.CI_PORTAL_USERNAME }}
+          CI_PORTAL_PASSWORD: ${{ secrets.CI_PORTAL_PASSWORD }}
         run: >
           mvn clean verify -Pgeneral-user
           -DENV=${{ github.event.inputs.env || 'dev' }}
