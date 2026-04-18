@@ -87,7 +87,9 @@ jobs:
 
       - name: Add .nojekyll
         if: always()
-        run: touch allure-history/.nojekyll
+        run: |
+          sudo touch allure-history/.nojekyll
+          sudo chmod 644 allure-history/.nojekyll
 
       - name: Publish Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4.0.0
