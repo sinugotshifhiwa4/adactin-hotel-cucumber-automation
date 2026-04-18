@@ -18,13 +18,24 @@ public class EnvironmentManager {
         if (dotenv == null) {
             String stage = EnvironmentDetector.getCurrentStage().name().toLowerCase();
             String filename = ".env." + stage;
+            boolean isCI = EnvironmentDetector.isCI();
 
-            logger.info("Loading environment file [file={}] [ci={}]", filename, EnvironmentDetector.isCI());
+            logger.info("Loading environment file [file={}] [ci={}]", filename, isCI);
 
-            dotenv = Dotenv.configure()
-                    .directory("./envs")
-                    .filename(filename)
-                    .load();
+            if (isCI) {
+                // In CI, environment variables are injected by the pipeline
+                // No .env file needed - use system environment directly
+                dotenv = Dotenv.configure()
+                        .ignoreIfMissing()
+                        .systemProperties()
+                        .load();
+            } else {
+                // Locally, load from .env file
+                dotenv = Dotenv.configure()
+                        .directory("./envs")
+                        .filename(filename)
+                        .load();
+            }
         }
     }
 
