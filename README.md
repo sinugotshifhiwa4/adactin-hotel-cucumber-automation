@@ -118,7 +118,7 @@ mvn clean verify -Pgeneral-user
 ### Run with Parameters
 
 ```bash
-mvn clean verify -P<profile> -Dtags=@<tag> -DENV=<env> -Dbrowser=<browser>
+mvn clean verify -Pgeneral-user -Dtags=@<tag> -DENV=<env> -Dbrowser=<browser> -DforkCount=<count>
 ```
 
 ---
@@ -161,6 +161,12 @@ mvn clean verify -Pgeneral-user -Dtags="@regression" -DENV=uat -Dbrowser=firefox
 
 # Run regression tests on preprod in Edge
 mvn clean verify -Pgeneral-user -Dtags="@regression" -DENV=preprod -Dbrowser=edge
+
+# Run regression tests with 4 parallel forks
+mvn clean verify -Pgeneral-user -Dtags="@regression" -DENV=dev -Dbrowser=firefox -DforkCount=4
+
+# Run sequentially (useful for debugging)
+mvn clean verify -Pgeneral-user -Dtags="@regression" -DENV=dev -Dbrowser=chrome -DforkCount=1
 ```
 
 ---
@@ -207,7 +213,8 @@ target/cucumber-reports/cucumber.json
 In CI pipelines, only `mvn clean verify -Pgeneral-user` is needed. The raw Allure results in
 `target/allure-results` are picked up by the CI platform directly:
 
-* **GitHub Actions** — use `simple-elf/allure-report-action` to publish to GitHub Pages
+* **GitHub Actions** — Allure report is automatically published to GitHub Pages after every run:
+  👉 **https://sinugotshifhiwa4.github.io/adactin-hotel-cucumber-automation**
 * **Jenkins** — use the Allure Jenkins Plugin pointing to `target/allure-results`
 * **GitLab CI** — publish `target/allure-results` as a pipeline artifact
 
@@ -270,12 +277,12 @@ In CI pipelines, only `mvn clean verify -Pgeneral-user` is needed. The raw Allur
 
 Key runtime properties (from `pom.xml`):
 
-| Property    | Description                |
-|-------------|----------------------------|
-| `env`       | Target environment         |
-| `browser`   | Browser to run tests       |
-| `tags`      | Cucumber tag filter        |
-| `forkCount` | Parallel execution control |
+| Property    | Description                          | Default |
+|-------------|--------------------------------------|---------|
+| `env`       | Target environment                   | `dev`   |
+| `browser`   | Browser to run tests                 | `chrome`|
+| `tags`      | Cucumber tag filter                  | `@sanity`|
+| `forkCount` | Parallel fork count (Surefire forks) | `1`     |
 
 ### Maven Profiles
 
@@ -333,11 +340,30 @@ The framework is designed to integrate easily with:
 * GitHub Actions
 * GitLab CI
 
-Example:
+### GitHub Actions
+
+The workflow supports manual triggers via `workflow_dispatch` with the following inputs:
+
+| Input       | Description          | Default      | Options                              |
+|-------------|----------------------|--------------|--------------------------------------|
+| `env`       | Target environment   | `dev`        | dev, qa, uat, preprod, prod          |
+| `browser`   | Browser              | `chrome`     | chrome, firefox, edge                |
+| `tags`      | Cucumber tags        | `@regression`| @regression, @sanity                 |
+| `forkCount` | Parallel fork count  | `2`          | 1, 2, 4, 8                           |
+
+Push and pull request triggers use these defaults automatically.
+
+Example CI command:
 
 ```bash
-mvn clean verify -Pgeneral-user -DENV=qa -Dtags="@regression" -Dbrowser=chrome
+mvn clean verify -Pgeneral-user -DENV=qa -Dtags="@regression" -Dbrowser=chrome -DforkCount=2
 ```
+
+### Allure Report (GitHub Pages)
+
+The Allure report is automatically published after every CI run:
+
+👉 **https://sinugotshifhiwa4.github.io/adactin-hotel-cucumber-automation**
 
 ---
 
