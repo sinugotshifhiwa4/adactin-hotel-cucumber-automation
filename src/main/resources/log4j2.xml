@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" monitorInterval="30">
+    <Properties>
+        <Property name="logBaseDir">logs</Property>
+        <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] [%t] [%logger{1}] - %msg%n%throwable</Property>
+        <Property name="filePrefix">test</Property>
+        <Property name="maxFileSize">10MB</Property>
+        <Property name="maxBackupFiles">5</Property>
+        <Property name="rolloverInterval">1</Property>
+
+        <!-- Reduced from 80000 to prevent log loss on abrupt JVM termination/test crash -->
+        <Property name="bufferSize">8192</Property>
+
+        <Property name="logRetentionDays">30</Property>
+        <Property name="totalSizeLimit">1GB</Property>
+
+        <!-- Console log level override: set -DconsoleLogLevel=debug for local debugging -->
+        <Property name="consoleLogLevel">${sys:consoleLogLevel:-info}</Property>
+
+        <Property name="debugFilePath">${logBaseDir}/debug/${filePrefix}_debug.log</Property>
+        <Property name="infoFilePath">${logBaseDir}/info/${filePrefix}_info.log</Property>
+        <Property name="warnFilePath">${logBaseDir}/warn/${filePrefix}_warn.log</Property>
+        <Property name="errorFilePath">${logBaseDir}/error/${filePrefix}_error.log</Property>
+        <Property name="testEvidenceFilePath">${logBaseDir}/evidence/${filePrefix}_evidence.log</Property>
+
+        <Property name="debugFilePattern">${logBaseDir}/debug/${filePrefix}_debug-%d{yyyy-MM-dd}-%i.log.gz</Property>
+        <Property name="infoFilePattern">${logBaseDir}/info/${filePrefix}_info-%d{yyyy-MM-dd}-%i.log.gz</Property>
+        <Property name="warnFilePattern">${logBaseDir}/warn/${filePrefix}_warn-%d{yyyy-MM-dd}-%i.log.gz</Property>
+        <Property name="errorFilePattern">${logBaseDir}/error/${filePrefix}_error-%d{yyyy-MM-dd}-%i.log.gz</Property>
+        <Property name="testEvidenceFilePattern">${logBaseDir}/evidence/${filePrefix}_evidence-%d{yyyy-MM-dd}-%i.log.gz</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender: level configurable via -DconsoleLogLevel (default: info) -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%highlight{${pattern}}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=cyan, TRACE=white}"/>
+            <Filters>
+                <ThresholdFilter level="${consoleLogLevel}" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Console>
+
+        <!-- Debug file: captures DEBUG and above -->
+        <RollingFile name="DebugFile" fileName="${debugFilePath}" filePattern="${debugFilePattern}" advertise="false">
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxFileSize}"/>
+                <TimeBasedTriggeringPolicy interval="${rolloverInterval}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxBackupFiles}">
+                <Delete basePath="${logBaseDir}" maxDepth="2">
+                    <IfFileName glob="debug/${filePrefix}_debug*.log.gz"/>
+                    <IfLastModified age="${logRetentionDays}d"/>
+                    <IfAccumulatedFileSize exceeds="${totalSizeLimit}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <Filters>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+        <!-- Info file: captures INFO and above -->
+        <RollingFile name="InfoFile" fileName="${infoFilePath}" filePattern="${infoFilePattern}" advertise="false">
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxFileSize}"/>
+                <TimeBasedTriggeringPolicy interval="${rolloverInterval}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxBackupFiles}">
+                <Delete basePath="${logBaseDir}" maxDepth="2">
+                    <IfFileName glob="info/${filePrefix}_info*.log.gz"/>
+                    <IfLastModified age="${logRetentionDays}d"/>
+                    <IfAccumulatedFileSize exceeds="${totalSizeLimit}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <Filters>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+        <!-- Warn file: captures WARN and above -->
+        <RollingFile name="WarnFile" fileName="${warnFilePath}" filePattern="${warnFilePattern}" advertise="false">
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxFileSize}"/>
+                <TimeBasedTriggeringPolicy interval="${rolloverInterval}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxBackupFiles}">
+                <Delete basePath="${logBaseDir}" maxDepth="2">
+                    <IfFileName glob="warn/${filePrefix}_warn*.log.gz"/>
+                    <IfLastModified age="${logRetentionDays}d"/>
+                    <IfAccumulatedFileSize exceeds="${totalSizeLimit}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+        <!-- Error file: captures ERROR and above, includes caller location for diagnosis -->
+        <RollingFile name="ErrorFile" fileName="${errorFilePath}" filePattern="${errorFilePattern}" advertise="false">
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxFileSize}"/>
+                <TimeBasedTriggeringPolicy interval="${rolloverInterval}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxBackupFiles}">
+                <Delete basePath="${logBaseDir}" maxDepth="2">
+                    <IfFileName glob="error/${filePrefix}_error*.log.gz"/>
+                    <IfLastModified age="${logRetentionDays}d"/>
+                    <IfAccumulatedFileSize exceeds="${totalSizeLimit}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+        <!--
+            Test Evidence Appender: dedicated log for Selenium test lifecycle events.
+            Use logger name "com.company.tests" in your framework to write to this appender.
+            Log test start, test result (pass/fail), screenshot paths, browser session IDs, etc.
+            Format includes full logger name for traceability across parallel test runs.
+        -->
+        <RollingFile name="TestEvidenceFile" fileName="${testEvidenceFilePath}" filePattern="${testEvidenceFilePattern}" advertise="false">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] [%t] [%logger] - %msg%n%throwable"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxFileSize}"/>
+                <TimeBasedTriggeringPolicy interval="${rolloverInterval}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxBackupFiles}">
+                <Delete basePath="${logBaseDir}" maxDepth="2">
+                    <IfFileName glob="evidence/${filePrefix}_evidence*.log.gz"/>
+                    <IfLastModified age="${logRetentionDays}d"/>
+                    <IfAccumulatedFileSize exceeds="${totalSizeLimit}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <Filters>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+        <!--
+            Async Appenders with corrected settings:
+            - bufferSize reduced to 8192 to limit log loss on crash/abrupt termination
+            - blocking="true" prevents silent message drops under burst load
+            - includeLocation="false" on all appenders for performance (Selenium generates high log volume)
+            - ErrorFile retains includeLocation="true" to preserve stack trace origin for diagnosis
+        -->
+        <Async name="AsyncDebug" bufferSize="${bufferSize}" includeLocation="false" blocking="true">
+            <AppenderRef ref="DebugFile"/>
+        </Async>
+        <Async name="AsyncInfo" bufferSize="${bufferSize}" includeLocation="false" blocking="true">
+            <AppenderRef ref="InfoFile"/>
+        </Async>
+        <Async name="AsyncWarn" bufferSize="${bufferSize}" includeLocation="false" blocking="true">
+            <AppenderRef ref="WarnFile"/>
+        </Async>
+        <Async name="AsyncError" bufferSize="${bufferSize}" includeLocation="true" blocking="true">
+            <AppenderRef ref="ErrorFile"/>
+        </Async>
+        <Async name="AsyncEvidence" bufferSize="${bufferSize}" includeLocation="false" blocking="true">
+            <AppenderRef ref="TestEvidenceFile"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <!--
+            Application logger: your main framework code under com.company
+            Routes to all standard appenders.
+        -->
+        <Logger name="com.company" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AsyncDebug"/>
+            <AppenderRef ref="AsyncInfo"/>
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+        </Logger>
+
+        <!--
+            Test execution logger: use this logger name in your test base class,
+            listeners, and page objects for test lifecycle events and evidence.
+            Writes to both the standard appenders AND the dedicated evidence file.
+            Example usage:
+                private static final Logger testLog = LogManager.getLogger("com.company.tests");
+                testLog.info("[TEST START] {} | Browser: {} | Session: {}", testName, browser, sessionId);
+                testLog.info("[SCREENSHOT] {}", screenshotPath);
+                testLog.info("[TEST PASS] {} | Duration: {}ms", testName, duration);
+                testLog.error("[TEST FAIL] {} | Reason: {}", testName, failureMessage);
+        -->
+        <Logger name="com.company.tests" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AsyncDebug"/>
+            <AppenderRef ref="AsyncInfo"/>
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+            <AppenderRef ref="AsyncEvidence"/>
+        </Logger>
+
+        <!--
+            Hibernate: suppress verbose SQL/query output; only surface warnings and errors.
+        -->
+        <Logger name="org.hibernate" level="warn" additivity="false">
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+        </Logger>
+
+        <!--
+            Spring Security: log auth events at info for audit trail.
+        -->
+        <Logger name="org.springframework.security" level="info" additivity="false">
+            <AppenderRef ref="AsyncInfo"/>
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+        </Logger>
+
+        <!--
+            Selenium / WebDriver noise suppression.
+            Without these, Selenium's HTTP wire protocol and remote session management
+            will flood logs with low-value internal messages.
+        -->
+        <Logger name="org.openqa.selenium" level="warn" additivity="false">
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+        </Logger>
+        <Logger name="org.openqa.selenium.remote" level="warn" additivity="false">
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+        </Logger>
+
+        <!--
+            Netty: used internally by Selenium's BiDi/CDP support.
+            Very chatty at DEBUG/INFO; suppress to warn.
+        -->
+        <Logger name="io.netty" level="warn" additivity="false">
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+        </Logger>
+
+        <!--
+            Apache HTTP Client: used by RemoteWebDriver for HTTP comms.
+            Suppress wire-level request/response noise.
+        -->
+        <Logger name="org.apache.http" level="warn" additivity="false">
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+        </Logger>
+        <Logger name="org.apache.http.wire" level="error" additivity="false">
+            <AppenderRef ref="AsyncError"/>
+        </Logger>
+
+        <!--
+            Root logger: catches anything not matched by a specific logger above.
+            INFO threshold keeps general noise manageable.
+        -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AsyncDebug"/>
+            <AppenderRef ref="AsyncInfo"/>
+            <AppenderRef ref="AsyncWarn"/>
+            <AppenderRef ref="AsyncError"/>
+        </Root>
+    </Loggers>
+</Configuration>

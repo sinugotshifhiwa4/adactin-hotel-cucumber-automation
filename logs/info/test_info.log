@@ -1,0 +1,130 @@
+2026-04-18 18:34:02.678 [INFO] [ForkJoinPool-1-worker-1] [EnvironmentManager] - Loading environment file [file=.env.dev] [ci=false]
+2026-04-18 18:34:02.691 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Environment initialised [stage=DEV] [ci=false]
+2026-04-18 18:37:14.619 [INFO] [ForkJoinPool-1-worker-1] [EnvironmentManager] - Loading environment file [file=.env.dev] [ci=false]
+2026-04-18 18:37:14.628 [INFO] [ForkJoinPool-1-worker-1] [GlobalHooks] - Environment initialised [stage=DEV] [ci=false]
+2026-04-18 18:37:14.801 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Initialising driver [browser=chrome]
+2026-04-18 18:37:14.801 [INFO] [ForkJoinPool-1-worker-2] [Hooks] - Initialising driver [browser=chrome]
+2026-04-18 18:37:14.802 [INFO] [ForkJoinPool-1-worker-1] [BrowserManager] - Creating driver [browser=chrome]
+2026-04-18 18:37:14.802 [INFO] [ForkJoinPool-1-worker-2] [BrowserManager] - Creating driver [browser=chrome]
+2026-04-18 18:37:18.238 [WARN] [ForkJoinPool-1-worker-1] [Hooks] - Step failed — capturing screenshot [scenario=Successful login with valid credentials]
+2026-04-18 18:37:18.238 [WARN] [ForkJoinPool-1-worker-2] [Hooks] - Step failed — capturing screenshot [scenario=Verify Login page title]
+2026-04-18 18:37:18.381 [INFO] [ForkJoinPool-1-worker-2] [Hooks] - Scenario completed [scenario=Verify Login page title] [status=FAILED]
+2026-04-18 18:37:18.474 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Scenario completed [scenario=Successful login with valid credentials] [status=FAILED]
+2026-04-18 18:42:38.867 [INFO] [ForkJoinPool-1-worker-1] [EnvironmentManager] - Loading environment file [file=.env.dev] [ci=false]
+2026-04-18 18:42:38.877 [INFO] [ForkJoinPool-1-worker-1] [GlobalHooks] - Environment initialised [stage=DEV] [ci=false]
+2026-04-18 18:42:39.053 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Initialising driver [browser=chrome]
+2026-04-18 18:42:39.053 [INFO] [ForkJoinPool-1-worker-1] [BrowserManager] - Creating driver [browser=chrome]
+2026-04-18 18:42:46.005 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Filled element [element=Username Input] [value=lunahqa123]
+2026-04-18 18:42:46.138 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Filled element [element=Password Input] [value=Password@123]
+2026-04-18 18:42:46.326 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Clicked element [element=Login Button]
+2026-04-18 18:42:47.871 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Element is not visible [element=Login Error Message]
+2026-04-18 18:42:47.871 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Scenario completed [scenario=Successful login with valid credentials] [status=PASSED]
+2026-04-18 18:44:13.602 [INFO] [ForkJoinPool-1-worker-1] [EnvironmentManager] - Loading environment file [file=.env.dev] [ci=false]
+2026-04-18 18:44:13.611 [INFO] [ForkJoinPool-1-worker-1] [GlobalHooks] - Environment initialised [stage=DEV] [ci=false]
+2026-04-18 18:44:13.805 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Initialising driver [browser=chrome]
+2026-04-18 18:44:13.806 [INFO] [ForkJoinPool-1-worker-1] [BrowserManager] - Creating driver [browser=chrome]
+2026-04-18 18:44:20.684 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Filled element [element=Username Input] [value=lunahqa123]
+2026-04-18 18:44:20.822 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Filled element [element=Password Input] [value=Lunah]
+2026-04-18 18:44:21.473 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Clicked element [element=Login Button]
+2026-04-18 18:45:06.988 [ERROR] [ForkJoinPool-1-worker-1] [BasePage] - Element still visible within timeout [element=Login Error Message]
+org.openqa.selenium.TimeoutException: Expected condition failed: waiting for element found by By.className: auth_error to become invisible
+(tried for 45 seconds with 500 milliseconds interval)
+Build info: version: '4.43.0', revision: 'dd0f534'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.8'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 147.0.7727.101, chrome: {chromedriverVersion: 147.0.7727.57 (b4f28b5637d0..., userDataDir: C:\Users\TSHIFH~1\AppData\L...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:54356}, goog:processID: 28956, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:54356/devtoo..., se:cdpVersion: 147.0.7727.101, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: 750eb23783fb53dc3ce7e9cd7b2887b0
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:85)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:234)
+	at com.tshifhiwa.pages.base.BasePage.waitForElementNotVisible(BasePage.java:80)
+	at com.tshifhiwa.pages.adactinHotel.LoginPage.verifyLoginErrorMessageIsNotVisible(LoginPage.java:36)
+	at com.tshifhiwa.StepDefinitions.LoginStepDefinition.theUserShouldBeRedirectedToTheSearchHotelPage(LoginStepDefinition.java:42)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at io.cucumber.java.Invoker.doInvoke(Invoker.java:66)
+	at io.cucumber.java.Invoker.invoke(Invoker.java:24)
+	at io.cucumber.java.AbstractGlueDefinition.invokeMethod(AbstractGlueDefinition.java:47)
+	at io.cucumber.java.JavaStepDefinition.execute(JavaStepDefinition.java:29)
+	at io.cucumber.core.runner.CoreStepDefinition.execute(CoreStepDefinition.java:66)
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.runStep(PickleStepDefinitionMatch.java:62)
+	at io.cucumber.core.runner.ExecutionMode$1.execute(ExecutionMode.java:10)
+	at io.cucumber.core.runner.TestStep.executeStep(TestStep.java:81)
+	at io.cucumber.core.runner.TestStep.run(TestStep.java:53)
+	at io.cucumber.core.runner.PickleStepTestStep.run(PickleStepTestStep.java:51)
+	at io.cucumber.core.runner.TestCase.run(TestCase.java:84)
+	at io.cucumber.core.runner.Runner.runPickle(Runner.java:75)
+	at io.cucumber.junit.platform.engine.CucumberEngineExecutionContext.lambda$runTestCase$4(CucumberEngineExecutionContext.java:114)
+	at io.cucumber.core.runtime.CucumberExecutionContext.lambda$runTestCase$5(CucumberExecutionContext.java:136)
+	at io.cucumber.core.runtime.RethrowingThrowableCollector.executeAndThrow(RethrowingThrowableCollector.java:23)
+	at io.cucumber.core.runtime.CucumberExecutionContext.runTestCase(CucumberExecutionContext.java:136)
+	at io.cucumber.junit.platform.engine.CucumberEngineExecutionContext.runTestCase(CucumberEngineExecutionContext.java:111)
+	at io.cucumber.junit.platform.engine.NodeDescriptor$PickleDescriptor.execute(NodeDescriptor.java:168)
+	at io.cucumber.junit.platform.engine.NodeDescriptor$PickleDescriptor.execute(NodeDescriptor.java:90)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.ForkJoinPoolHierarchicalTestExecutorService$ExclusiveTask.exec(ForkJoinPoolHierarchicalTestExecutorService.java:274)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.tryRemoveAndExec(ForkJoinPool.java:1349)
+	at java.base/java.util.concurrent.ForkJoinTask.awaitDone(ForkJoinTask.java:422)
+	at java.base/java.util.concurrent.ForkJoinTask.join(ForkJoinTask.java:651)
+	at org.junit.platform.engine.support.hierarchical.ForkJoinPoolHierarchicalTestExecutorService.joinConcurrentTasksInReverseOrderToEnableWorkStealing(ForkJoinPoolHierarchicalTestExecutorService.java:201)
+	at org.junit.platform.engine.support.hierarchical.ForkJoinPoolHierarchicalTestExecutorService.invokeAll(ForkJoinPoolHierarchicalTestExecutorService.java:167)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.ForkJoinPoolHierarchicalTestExecutorService$ExclusiveTask.exec(ForkJoinPoolHierarchicalTestExecutorService.java:274)
+	at org.junit.platform.engine.support.hierarchical.ForkJoinPoolHierarchicalTestExecutorService$ExclusiveTask.execSync(ForkJoinPoolHierarchicalTestExecutorService.java:247)
+	at org.junit.platform.engine.support.hierarchical.ForkJoinPoolHierarchicalTestExecutorService.invokeAll(ForkJoinPoolHierarchicalTestExecutorService.java:159)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.ForkJoinPoolHierarchicalTestExecutorService$ExclusiveTask.exec(ForkJoinPoolHierarchicalTestExecutorService.java:274)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1310)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1841)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1806)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188)
+2026-04-18 18:45:07.035 [WARN] [ForkJoinPool-1-worker-1] [Hooks] - Step failed — capturing screenshot [scenario=Successful login with valid credentials]
+2026-04-18 18:45:07.441 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Scenario completed [scenario=Successful login with valid credentials] [status=FAILED]
+2026-04-18 18:46:41.972 [INFO] [ForkJoinPool-1-worker-1] [EnvironmentManager] - Loading environment file [file=.env.dev] [ci=false]
+2026-04-18 18:46:41.985 [INFO] [ForkJoinPool-1-worker-1] [GlobalHooks] - Environment initialised [stage=DEV] [ci=false]
+2026-04-18 18:46:42.171 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Initialising driver [browser=chrome]
+2026-04-18 18:46:42.171 [INFO] [ForkJoinPool-1-worker-2] [Hooks] - Initialising driver [browser=chrome]
+2026-04-18 18:46:42.172 [INFO] [ForkJoinPool-1-worker-2] [BrowserManager] - Creating driver [browser=chrome]
+2026-04-18 18:46:42.172 [INFO] [ForkJoinPool-1-worker-1] [BrowserManager] - Creating driver [browser=chrome]
+2026-04-18 18:46:48.780 [INFO] [ForkJoinPool-1-worker-2] [BasePage] - Page title [title=Adactin.com - Hotel Reservation System]
+2026-04-18 18:46:48.780 [INFO] [ForkJoinPool-1-worker-2] [Hooks] - Scenario completed [scenario=Verify Login page title] [status=PASSED]
+2026-04-18 18:46:48.961 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Filled element [element=Username Input] [value=lunahqa123]
+2026-04-18 18:46:49.146 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Filled element [element=Password Input] [value=Password@123]
+2026-04-18 18:46:50.750 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Clicked element [element=Login Button]
+2026-04-18 18:46:50.817 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Element is not visible [element=Login Error Message]
+2026-04-18 18:46:50.820 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Scenario completed [scenario=Successful login with valid credentials] [status=PASSED]
+2026-04-18 18:50:32.003 [INFO] [ForkJoinPool-1-worker-1] [EnvironmentManager] - Loading environment file [file=.env.dev] [ci=false]
+2026-04-18 18:50:32.013 [INFO] [ForkJoinPool-1-worker-1] [GlobalHooks] - Environment initialised [stage=DEV] [ci=false]
+2026-04-18 18:50:32.190 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Initialising driver [browser=chrome]
+2026-04-18 18:50:32.190 [INFO] [ForkJoinPool-1-worker-2] [Hooks] - Initialising driver [browser=chrome]
+2026-04-18 18:50:32.191 [INFO] [ForkJoinPool-1-worker-2] [BrowserManager] - Creating driver [browser=chrome]
+2026-04-18 18:50:32.191 [INFO] [ForkJoinPool-1-worker-1] [BrowserManager] - Creating driver [browser=chrome]
+2026-04-18 18:50:38.913 [INFO] [ForkJoinPool-1-worker-2] [BasePage] - Page title [title=Adactin.com - Hotel Reservation System]
+2026-04-18 18:50:38.913 [INFO] [ForkJoinPool-1-worker-2] [Hooks] - Scenario completed [scenario=Verify Login page title] [status=PASSED]
+2026-04-18 18:50:39.358 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Filled element [element=Username Input] [value=lunahqa123]
+2026-04-18 18:50:39.486 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Filled element [element=Password Input] [value=Password@123]
+2026-04-18 18:50:41.155 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Clicked element [element=Login Button]
+2026-04-18 18:50:41.228 [INFO] [ForkJoinPool-1-worker-1] [BasePage] - Element is not visible [element=Login Error Message]
+2026-04-18 18:50:41.229 [INFO] [ForkJoinPool-1-worker-1] [Hooks] - Scenario completed [scenario=Successful login with valid credentials] [status=PASSED]
