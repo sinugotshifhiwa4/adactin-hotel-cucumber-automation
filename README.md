@@ -13,8 +13,8 @@ The framework follows a clean and scalable architecture using:
 * **Maven build management**
 * **Environment-driven configuration**
 
-It supports execution across multiple environments and browsers, and is structured for both **local execution** and *
-*CI/CD integration**.
+It supports execution across multiple environments and browsers, and is structured for both **local execution** and
+**CI/CD integration**.
 
 ---
 
@@ -27,6 +27,7 @@ It supports execution across multiple environments and browsers, and is structur
 * **Build Tool:** Maven
 * **Logging:** Log4j2
 * **Config Management:** dotenv-java
+* **Reporting:** Allure + Cucumber HTML/JSON
 
 ---
 
@@ -61,7 +62,10 @@ It supports execution across multiple environments and browsers, and is structur
 │       ├── features/         # Gherkin feature files
 │
 ├── target/
-│   ├── cucumber-reports/     # HTML & JSON reports
+│   ├── allure-results/       # Raw Allure results
+│   ├── site/
+│   │   └── allure-maven-plugin/  # Generated Allure report
+│   ├── cucumber-reports/     # HTML & JSON Cucumber reports
 │
 └── pom.xml
 ```
@@ -106,7 +110,7 @@ Then update values inside `.env.dev`.
 ### Basic Command
 
 ```bash
-mvn test
+mvn clean verify -Pgeneral-user
 ```
 
 ---
@@ -114,7 +118,7 @@ mvn test
 ### Run with Parameters
 
 ```bash
-mvn test -Dtags=@<tag> -DENV=<env> -Dbrowser=<browser>
+mvn clean verify -P<profile> -Dtags=@<tag> -DENV=<env> -Dbrowser=<browser>
 ```
 
 ---
@@ -150,14 +154,62 @@ mvn test -Dtags=@<tag> -DENV=<env> -Dbrowser=<browser>
 
 ```bash
 # Run sanity tests on QA in Chrome
-mvn test -Dtags="@sanity" -DENV=qa -Dbrowser=chrome
+mvn clean verify -Pgeneral-user -Dtags="@sanity" -DENV=qa -Dbrowser=chrome
 
 # Run regression tests on UAT in Firefox
-mvn test -Dtags="@regression" -DENV=uat -Dbrowser=firefox
+mvn clean verify -Pgeneral-user -Dtags="@regression" -DENV=uat -Dbrowser=firefox
 
 # Run regression tests on preprod in Edge
-mvn test -Dtags="@regression" -DENV=preprod -Dbrowser=edge
+mvn clean verify -Pgeneral-user -Dtags="@regression" -DENV=preprod -Dbrowser=edge
 ```
+
+---
+
+## Reporting
+
+### Allure Report (Recommended)
+
+Allure results are written to `target/allure-results` during test execution.
+
+#### Generate report (local)
+
+```bash
+mvn allure:report -Pgeneral-user
+```
+
+Report is generated to `target/site/allure-maven-plugin/index.html`.
+
+#### Serve report in browser (local)
+
+```bash
+mvn allure:serve -Pgeneral-user
+```
+
+This starts a local server and opens the report automatically in your browser.
+
+> **Note:** `allure:serve` is for local use only. Do not use it in CI pipelines.
+
+---
+
+### Cucumber Reports
+
+HTML and JSON reports are also generated under:
+
+```
+target/cucumber-reports/index.html
+target/cucumber-reports/cucumber.json
+```
+
+---
+
+### CI/CD Reporting
+
+In CI pipelines, only `mvn clean verify -Pgeneral-user` is needed. The raw Allure results in
+`target/allure-results` are picked up by the CI platform directly:
+
+* **GitHub Actions** — use `simple-elf/allure-report-action` to publish to GitHub Pages
+* **Jenkins** — use the Allure Jenkins Plugin pointing to `target/allure-results`
+* **GitLab CI** — publish `target/allure-results` as a pipeline artifact
 
 ---
 
@@ -214,22 +266,6 @@ mvn test -Dtags="@regression" -DENV=preprod -Dbrowser=edge
 
 ---
 
-### Reporting
-
-* HTML reports generated under:
-
-```
-target/cucumber-reports/index.html
-```
-
-* JSON reports for integrations:
-
-```
-target/cucumber-reports/index.json
-```
-
----
-
 ## Maven Configuration
 
 Key runtime properties (from `pom.xml`):
@@ -240,6 +276,30 @@ Key runtime properties (from `pom.xml`):
 | `browser`   | Browser to run tests       |
 | `tags`      | Cucumber tag filter        |
 | `forkCount` | Parallel execution control |
+
+### Maven Profiles
+
+| Profile        | Description                          | Active By Default |
+|----------------|--------------------------------------|-------------------|
+| `general-user` | Default profile for local and CI use | Yes               |
+
+#### `general-user` Profile
+
+This is the only profile and is active by default. It configures:
+
+* **maven-surefire-plugin** — runs `TestRunner.java` with the following system properties:
+    * `ENV` — target environment
+    * `browser` — browser to use
+    * `cucumber.filter.tags` — tag filter
+    * `allure.results.directory` — writes Allure results to `target/allure-results`
+    * `java.util.logging.manager` — routes JUL logging through Log4j2
+* **allure-maven plugin** — generates the Allure report from `target/allure-results`
+
+Always activate it explicitly:
+
+```bash
+-Pgeneral-user
+```
 
 ---
 
@@ -261,6 +321,7 @@ Key runtime properties (from `pom.xml`):
 * Use **TestContext** for shared state
 * Avoid hardcoding test data → use environment/config
 * Tag tests properly (`@sanity`, `@regression`)
+* Always run with `-Pgeneral-user` profile
 
 ---
 
@@ -275,7 +336,7 @@ The framework is designed to integrate easily with:
 Example:
 
 ```bash
-mvn clean test -DENV=qa -Dtags="@regression" -Dbrowser=chrome
+mvn clean verify -Pgeneral-user -DENV=qa -Dtags="@regression" -Dbrowser=chrome
 ```
 
 ---
@@ -291,18 +352,27 @@ mvn clean test -DENV=qa -Dtags="@regression" -Dbrowser=chrome
 
 ### Environment Not Loading
 
-* Check `.env.<env>` exists
+* Check `.env.<env>` exists in the `envs/` folder
 * Ensure correct `ENV` is passed
 
 ---
 
 ### Tests Not Running
 
-* Verify tags:
+* Verify tags are correct:
 
 ```bash
 -Dtags="@sanity"
 ```
+
+* Ensure the `-Pgeneral-user` profile is included
+
+---
+
+### Allure Results Not Found
+
+* Ensure `allure.results.directory` system property is set in Surefire config in `pom.xml`
+* Check that `target/allure-results` exists after running `mvn clean verify`
 
 ---
 
@@ -311,7 +381,6 @@ mvn clean test -DENV=qa -Dtags="@regression" -Dbrowser=chrome
 * Selenium Grid integration
 * Parallel execution improvements
 * API testing integration
-* Advanced reporting (Allure)
 
 ---
 

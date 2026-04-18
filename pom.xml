@@ -130,6 +130,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber7-jvm</artifactId>
+            <version>2.29.0</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -146,7 +152,7 @@
 
     <profiles>
         <profile>
-            <id>run</id>
+            <id>general-user</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -165,10 +171,20 @@
                                 <browser>${browser}</browser>
                                 <cucumber.filter.tags>${tags}</cucumber.filter.tags>
                                 <java.util.logging.manager>org.apache.logging.log4j.jul.LogManager</java.util.logging.manager>
+                                <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                             </systemPropertyVariables>
                             <reportsDirectory>${project.build.directory}/surefire-reports-${env}</reportsDirectory>
                             <forkCount>${forkCount}</forkCount>
-                            <useSystemClassLoader>false</useSystemClassLoader>
+                            <reuseForks>true</reuseForks>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>io.qameta.allure</groupId>
+                        <artifactId>allure-maven</artifactId>
+                        <version>2.12.0</version>
+                        <configuration>
+                            <reportVersion>2.29.0</reportVersion>
+                            <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
                         </configuration>
                     </plugin>
                 </plugins>

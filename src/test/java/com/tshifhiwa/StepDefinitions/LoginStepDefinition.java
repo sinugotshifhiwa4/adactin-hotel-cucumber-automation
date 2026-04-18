@@ -19,6 +19,7 @@ public class LoginStepDefinition {
     @Given("the user navigates to the Login page")
     public void theUserNavigatesToTheLoginPage() {
         context.loginPage.navigateToPortal(EnvironmentResolver.getBaseUrl());
+        context.loginPage.verifyCompanyLogoIsVisible();
     }
 
     @Then("the page title should display {string}")

@@ -11,6 +11,10 @@ public class LoginPage extends BasePage {
     private final By loginButton = By.id("login");
     private  final By loginErrorMessage = By.className("auth_error");
 
+    public void verifyCompanyLogoIsVisible(){
+        waitForElementVisible(companyLogo, "Company Logo");
+    }
+
     public void fillUsername(String username) {
         fillElement(usernameInput, username, "Username Input");
     }
